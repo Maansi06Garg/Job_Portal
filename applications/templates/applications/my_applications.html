@@ -1,0 +1,26 @@
+<h2>My Applications</h2>
+
+{% for application in applications %}
+
+<hr>
+
+<h3>
+{{ application.job.title }}
+</h3>
+
+<p>
+Company:
+{{ application.job.employer.username }}
+</p>
+
+<p>
+Status:
+<b>{{ application.status }}</b>
+</p>
+
+<p>
+Applied On:
+{{ application.applied_at }}
+</p>
+
+{% endfor %}

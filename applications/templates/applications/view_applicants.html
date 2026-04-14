@@ -1,0 +1,80 @@
+<h2>Applicants for {{ job.title }}</h2>
+
+{% for application in applications %}
+
+<hr>
+
+<h3>
+User: {{ application.applicant.username }}
+</h3>
+
+<p>
+<b>Skills:</b>
+{{ application.applicant.jobseekerprofile.skills }}
+</p>
+
+<p>
+<b>Experience:</b>
+{{ application.applicant.jobseekerprofile.experience }} years
+</p>
+
+<p>
+<b>Location:</b>
+{{ application.applicant.jobseekerprofile.location }}
+</p>
+
+<p>
+<b>Status:</b>
+{{ application.status }}
+</p>
+
+<p>
+<a href="{{ application.resume.url }}">
+Download Resume
+</a>
+</p>
+
+<form method="post"
+      action="{% url 'update_status' application.id %}">
+
+    {% csrf_token %}
+
+    <select name="status">
+
+<option value="applied"
+{% if application.status == "applied" %}
+selected
+{% endif %}>
+Applied
+</option>
+
+<option value="shortlisted"
+{% if application.status == "shortlisted" %}
+selected
+{% endif %}>
+Shortlisted
+</option>
+
+<option value="rejected"
+{% if application.status == "rejected" %}
+selected
+{% endif %}>
+Rejected
+</option>
+
+<option value="accepted"
+{% if application.status == "accepted" %}
+selected
+{% endif %}>
+Accepted
+</option>
+
+    </select>
+
+    <button type="submit">
+        Update Status
+    </button>
+
+</form>
+
+{% endfor %}

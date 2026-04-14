@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Job
 from .forms import JobForm
+from applications.models import Application
 
 
 # Create Job (Employer only)
@@ -59,8 +60,22 @@ def job_detail(request, job_id):
         id=job_id
     )
 
+    has_applied = False
+
+    if request.user.is_authenticated:
+
+        if request.user.user_type == 'jobseeker':
+
+            has_applied = Application.objects.filter(
+                job=job,
+                applicant=request.user
+            ).exists()
+
     return render(
         request,
         'jobs/job_detail.html',
-        {'job': job}
+        {
+            'job': job,
+            'has_applied': has_applied
+        }
     )

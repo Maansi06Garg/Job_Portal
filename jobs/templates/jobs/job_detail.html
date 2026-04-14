@@ -21,8 +21,30 @@ Experience Required: {{ job.experience_required }}
 
     {% if user.user_type == 'jobseeker' %}
 
-        <a href="{% url 'apply_job' job.id %}">
-            Apply Now
+        {% if has_applied %}
+
+            <button disabled>
+                Applied
+            </button>
+
+        {% else %}
+
+            <a href="{% url 'apply_job' job.id %}">
+                Apply Now
+            </a>
+
+        {% endif %}
+
+    {% endif %}
+
+{% endif %}
+
+{% if user.is_authenticated %}
+
+    {% if user.user_type == 'employer' %}
+
+        <a href="{% url 'view_applicants' job.id %}">
+            View Applicants
         </a>
 
     {% endif %}
