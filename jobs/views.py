@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Q
 from .models import Job
 from .forms import JobForm
 from applications.models import Application
@@ -44,12 +44,43 @@ def job_list(request):
 
     jobs = Job.objects.all().order_by('-created_at')
 
+    keyword = request.GET.get('keyword')
+    location = request.GET.get('location')
+    salary = request.GET.get('salary')
+    experience = request.GET.get('experience')
+
+    # Keyword Search
+    if keyword:
+        jobs = jobs.filter(
+            Q(title__icontains=keyword) |
+            Q(description__icontains=keyword)
+        )
+
+    # Location Filter
+    if location:
+        jobs = jobs.filter(
+            location__icontains=location
+        )
+
+    # Salary Filter
+    if salary:
+        jobs = jobs.filter(
+            salary__gte=salary
+        )
+
+    # Experience Filter
+    if experience:
+        jobs = jobs.filter(
+            experience_required__lte=experience
+        )
+
     return render(
         request,
         'jobs/job_list.html',
-        {'jobs': jobs}
+        {
+            'jobs': jobs
+        }
     )
-
 
 # Job Detail
 

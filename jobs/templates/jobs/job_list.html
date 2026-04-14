@@ -1,4 +1,3 @@
-<h2>Job List</h2>
 
 {% if user.is_authenticated %}
 
@@ -27,6 +26,34 @@
     {% endif %}
 
 {% endif %}
+
+<h2>Job List</h2>
+
+<form method="GET">
+
+<input type="text"
+       name="keyword"
+       placeholder="Keyword">
+
+<input type="text"
+       name="location"
+       placeholder="Location">
+
+<input type="number"
+       name="salary"
+       placeholder="Minimum Salary">
+
+<input type="number"
+       name="experience"
+       placeholder="Max Experience">
+
+<button type="submit">
+Search
+</button>
+
+</form>
+
+<hr>
 
 {% for job in jobs %}
 
