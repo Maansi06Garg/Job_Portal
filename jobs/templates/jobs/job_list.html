@@ -1,8 +1,16 @@
 <h2>Job List</h2>
 
-<a href="{% url 'create_job' %}">
-Create Job
-</a>
+{% if user.is_authenticated %}
+
+    {% if user.user_type == 'employer' %}
+
+        <a href="{% url 'create_job' %}">
+            Create Job
+        </a>
+
+    {% endif %}
+
+{% endif %}
 
 <hr>
 

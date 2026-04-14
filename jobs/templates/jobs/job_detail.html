@@ -15,3 +15,16 @@ Salary: {{ job.salary }}
 <p>
 Experience Required: {{ job.experience_required }}
 </p>
+<hr>
+
+{% if user.is_authenticated %}
+
+    {% if user.user_type == 'jobseeker' %}
+
+        <a href="{% url 'apply_job' job.id %}">
+            Apply Now
+        </a>
+
+    {% endif %}
+
+{% endif %}
