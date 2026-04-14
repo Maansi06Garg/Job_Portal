@@ -72,7 +72,8 @@ def user_login(request):
             user = form.get_user()
             login(request, user)
 
-            return redirect('home')
+            next_page = request.POST.get('next') or request.GET.get('next')
+            return redirect(next_page or 'job_list')
 
     else:
         form = AuthenticationForm()

@@ -1,3 +1,14 @@
-<a href="{% url 'apply_job' job.id %}">
-Apply Now
-</a>
+{% extends "base.html" %}
+
+{% block title %}Job Details{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h4 mb-3">{{ job.title }}</h2>
+    <p class="text-muted mb-2">{{ job.location }} • ₹{{ job.salary }}</p>
+    <p>{{ job.description }}</p>
+    <a class="btn btn-primary" href="{% url 'apply_job' job.id %}">Apply Now</a>
+  </div>
+</div>
+{% endblock %}

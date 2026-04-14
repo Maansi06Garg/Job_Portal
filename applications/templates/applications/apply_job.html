@@ -1,13 +1,19 @@
-<h2>Apply for {{ job.title }}</h2>
+{% extends "base.html" %}
 
-<form method="post" enctype="multipart/form-data">
+{% block title %}Apply for {{ job.title }}{% endblock %}
 
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button type="submit">
-        Apply
-    </button>
-
-</form>
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="mb-4">
+      <h2 class="h4">Apply for {{ job.title }}</h2>
+      <p class="text-muted mb-0">{{ job.location }} • ₹{{ job.salary }}</p>
+    </div>
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-primary mt-3" type="submit">Submit Application</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

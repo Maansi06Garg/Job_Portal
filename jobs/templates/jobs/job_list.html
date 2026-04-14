@@ -1,76 +1,64 @@
 
-{% if user.is_authenticated %}
+{% extends "base.html" %}
 
-    {% if user.user_type == 'employer' %}
+{% block title %}Browse Jobs{% endblock %}
 
-        <a href="{% url 'create_job' %}">
-            Create Job
-        </a>
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+  <div>
+    <h2 class="mb-1">Available Jobs</h2>
+    <p class="text-muted mb-0">Search current openings and discover your next opportunity.</p>
+  </div>
+  {% if user.is_authenticated and user.user_type == 'employer' %}
+    <a class="btn btn-success" href="{% url 'create_job' %}">Post New Job</a>
+  {% endif %}
+</div>
 
-    {% endif %}
+<div class="card mb-4">
+  <div class="card-body">
+    <form method="get" class="row g-3">
+      <div class="col-md-4">
+        <input type="text" name="keyword" value="{{ request.GET.keyword }}" class="form-control" placeholder="Keyword">
+      </div>
+      <div class="col-md-3">
+        <input type="text" name="location" value="{{ request.GET.location }}" class="form-control" placeholder="Location">
+      </div>
+      <div class="col-md-2">
+        <input type="number" name="salary" value="{{ request.GET.salary }}" class="form-control" placeholder="Min salary">
+      </div>
+      <div class="col-md-2">
+        <input type="number" name="experience" value="{{ request.GET.experience }}" class="form-control" placeholder="Max experience">
+      </div>
+      <div class="col-md-1 text-end">
+        <button type="submit" class="btn btn-primary w-110">Search</button>
+      </div>
+    </form>
+  </div>
+</div>
 
+{% if jobs %}
+<div class="row g-4">
+  {% for job in jobs %}
+  <div class="col-12">
+    <article class="card job-card">
+      <div class="card-body">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+          <div>
+            <h3 class="h5 mb-1"><a class="stretched-link text-decoration-none text-dark" href="{% url 'job_detail' job.id %}">{{ job.title }}</a></h3>
+            <p class="mb-1 text-muted">{{ job.location }} • {{ job.experience_required }} years experience</p>
+          </div>
+          <span class="badge bg-secondary">₹{{ job.salary }}</span>
+        </div>
+      </div>
+    </article>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="card">
+  <div class="card-body">
+    <p class="mb-0">No jobs were found. Try broadening your search or check back later.</p>
+  </div>
+</div>
 {% endif %}
-
-<hr>
-
-{% if user.is_authenticated %}
-
-    {% if user.user_type == 'jobseeker' %}
-
-        <br><br>
-
-        <a href="{% url 'my_applications' %}">
-            My Applications
-        </a>
-
-    {% endif %}
-
-{% endif %}
-
-<h2>Job List</h2>
-
-<form method="GET">
-
-<input type="text"
-       name="keyword"
-       placeholder="Keyword">
-
-<input type="text"
-       name="location"
-       placeholder="Location">
-
-<input type="number"
-       name="salary"
-       placeholder="Minimum Salary">
-
-<input type="number"
-       name="experience"
-       placeholder="Max Experience">
-
-<button type="submit">
-Search
-</button>
-
-</form>
-
-<hr>
-
-{% for job in jobs %}
-
-<h3>
-    <a href="{% url 'job_detail' job.id %}">
-        {{ job.title }}
-    </a>
-</h3>
-
-<p>
-Location: {{ job.location }}
-</p>
-
-<p>
-Salary: {{ job.salary }}
-</p>
-
-<hr>
-
-{% endfor %}
+{% endblock %}

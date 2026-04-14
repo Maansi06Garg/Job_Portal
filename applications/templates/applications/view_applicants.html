@@ -1,80 +1,49 @@
-<h2>Applicants for {{ job.title }}</h2>
+{% extends "base.html" %}
 
-{% for application in applications %}
+{% block title %}Applicants for {{ job.title }}{% endblock %}
 
-<hr>
+{% block content %}
+<div class="mb-4">
+  <h2 class="h4">Applicants for {{ job.title }}</h2>
+  <p class="text-muted mb-0">Review candidate profiles and update application statuses quickly.</p>
+</div>
 
-<h3>
-User: {{ application.applicant.username }}
-</h3>
-
-<p>
-<b>Skills:</b>
-{{ application.applicant.jobseekerprofile.skills }}
-</p>
-
-<p>
-<b>Experience:</b>
-{{ application.applicant.jobseekerprofile.experience }} years
-</p>
-
-<p>
-<b>Location:</b>
-{{ application.applicant.jobseekerprofile.location }}
-</p>
-
-<p>
-<b>Status:</b>
-{{ application.status }}
-</p>
-
-<p>
-<a href="{{ application.resume.url }}">
-Download Resume
-</a>
-</p>
-
-<form method="post"
-      action="{% url 'update_status' application.id %}">
-
-    {% csrf_token %}
-
-    <select name="status">
-
-<option value="applied"
-{% if application.status == "applied" %}
-selected
-{% endif %}>
-Applied
-</option>
-
-<option value="shortlisted"
-{% if application.status == "shortlisted" %}
-selected
-{% endif %}>
-Shortlisted
-</option>
-
-<option value="rejected"
-{% if application.status == "rejected" %}
-selected
-{% endif %}>
-Rejected
-</option>
-
-<option value="accepted"
-{% if application.status == "accepted" %}
-selected
-{% endif %}>
-Accepted
-</option>
-
-    </select>
-
-    <button type="submit">
-        Update Status
-    </button>
-
-</form>
-
-{% endfor %}
+{% if applications %}
+<div class="row g-4">
+  {% for application in applications %}
+  <div class="col-12">
+    <div class="card job-card">
+      <div class="card-body">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-4">
+          <div>
+            <h3 class="h5 mb-1">{{ application.applicant.username }}</h3>
+            <p class="mb-1"><strong>Skills:</strong> {{ application.applicant.jobseekerprofile.skills }}</p>
+            <p class="mb-1"><strong>Experience:</strong> {{ application.applicant.jobseekerprofile.experience }} years</p>
+            <p class="mb-1"><strong>Location:</strong> {{ application.applicant.jobseekerprofile.location }}</p>
+            <p class="mb-1"><strong>Status:</strong> {{ application.status|title }}</p>
+            <p class="mb-0"><a class="link-secondary" href="{{ application.resume.url }}">Download resume</a></p>
+          </div>
+          <form method="post" action="{% url 'update_status' application.id %}" class="d-flex flex-column gap-2 mt-3 mt-md-0" novalidate>
+            {% csrf_token %}
+            <select name="status" class="form-select">
+              <option value="applied" {% if application.status == "applied" %}selected{% endif %}>Applied</option>
+              <option value="shortlisted" {% if application.status == "shortlisted" %}selected{% endif %}>Shortlisted</option>
+              <option value="rejected" {% if application.status == "rejected" %}selected{% endif %}>Rejected</option>
+              <option value="accepted" {% if application.status == "accepted" %}selected{% endif %}>Accepted</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Update Status</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="card">
+  <div class="card-body">
+    <p class="mb-0">No applicants have applied yet.</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

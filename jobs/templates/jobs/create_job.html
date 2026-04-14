@@ -1,13 +1,16 @@
-<h2>Create Job</h2>
+{% extends "base.html" %}
 
-<form method="post">
+{% block title %}Create Job{% endblock %}
 
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button type="submit">
-        Post Job
-    </button>
-
-</form>
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h4 mb-4">Create a New Job</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-success mt-3" type="submit">Post Job</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
