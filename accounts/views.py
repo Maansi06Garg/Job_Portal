@@ -7,6 +7,102 @@ from .forms import (
     EmployerSignUpForm
 )
 
+from django.contrib.auth.decorators import login_required
+from jobs.models import Job
+from applications.models import Application
+
+@login_required
+def dashboard(request):
+
+    user = request.user
+
+    # Employer Dashboard
+    if user.user_type == 'employer':
+
+        jobs = Job.objects.filter(employer=user)
+
+        total_jobs = jobs.count()
+
+        total_applications = Application.objects.filter(
+            job__employer=user
+        ).count()
+
+        pending_applications = Application.objects.filter(
+            job__employer=user,
+            status='applied'
+        ).count()
+
+        shortlisted = Application.objects.filter(
+            job__employer=user,
+            status='shortlisted'
+        ).count()
+
+        accepted = Application.objects.filter(
+            job__employer=user,
+            status='accepted'
+        ).count()
+
+        rejected = Application.objects.filter(
+            job__employer=user,
+            status='rejected'
+        ).count()
+
+        context = {
+            'total_jobs': total_jobs,
+            'total_applications': total_applications,
+            'pending_applications': pending_applications,
+            'shortlisted': shortlisted,
+            'accepted': accepted,
+            'rejected': rejected,
+        }
+
+        return render(
+            request,
+            'dashboard/employer_dashboard.html',
+            context
+        )
+
+    # Job Seeker Dashboard
+    elif user.user_type == 'jobseeker':
+
+        total_applications = Application.objects.filter(
+            applicant=user
+        ).count()
+
+        applied = Application.objects.filter(
+            applicant=user,
+            status='applied'
+        ).count()
+
+        shortlisted = Application.objects.filter(
+            applicant=user,
+            status='shortlisted'
+        ).count()
+
+        accepted = Application.objects.filter(
+            applicant=user,
+            status='accepted'
+        ).count()
+
+        rejected = Application.objects.filter(
+            applicant=user,
+            status='rejected'
+        ).count()
+
+        context = {
+            'total_applications': total_applications,
+            'applied': applied,
+            'shortlisted': shortlisted,
+            'accepted': accepted,
+            'rejected': rejected,
+        }
+
+        return render(
+            request,
+            'dashboard/jobseeker_dashboard.html',
+            context
+        )
+
 
 def home(request):
     return render(request, 'accounts/home.html')
