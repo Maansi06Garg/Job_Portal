@@ -42,7 +42,18 @@ def create_job(request):
 
 def job_list(request):
 
-    jobs = Job.objects.all().order_by('-created_at')
+    if request.user.is_authenticated and request.user.user_type == 'employer':
+
+        # Employer sees only own jobs
+        jobs = Job.objects.filter(
+            employer=request.user
+        ).order_by('-created_at')
+
+    else:
+
+        # Job seekers see all jobs
+        jobs = Job.objects.all().order_by('-created_at')
+
 
     keyword = request.GET.get('keyword')
     location = request.GET.get('location')

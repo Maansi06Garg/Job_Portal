@@ -18,7 +18,7 @@
 
       <div class="collapse navbar-collapse" id="mainNavbar">
         <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item"><a class="nav-link" href="{% url 'job_list' %}">Browse Jobs</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
           {% if user.is_authenticated %}
             {% if user.user_type == 'employer' %}
               <li class="nav-item"><a class="nav-link" href="{% url 'create_job' %}">Post Job</a></li>
