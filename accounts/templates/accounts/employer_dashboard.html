@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Employer Dashboard{% endblock %}
+
+{% block content %}
+  <div class="dashboard-header mb-4">
+    <h2 class="mb-2">Employer Dashboard</h2>
+    <p class="text-muted">Your hiring summary at a glance.</p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-sm-6 col-xl-4">
+      <div class="summary-card card p-4 h-100">
+        <h5 class="summary-label">Total Jobs Posted</h5>
+        <p class="summary-value">{{ total_jobs }}</p>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+      <div class="summary-card card p-4 h-100">
+        <h5 class="summary-label">Total Applications</h5>
+        <p class="summary-value">{{ total_applications }}</p>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+      <div class="summary-card card p-4 h-100">
+        <h5 class="summary-label">Pending Applications</h5>
+        <p class="summary-value">{{ pending_applications }}</p>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+      <div class="summary-card card p-4 h-100">
+        <h5 class="summary-label">Shortlisted</h5>
+        <p class="summary-value">{{ shortlisted }}</p>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+      <div class="summary-card card p-4 h-100">
+        <h5 class="summary-label">Accepted</h5>
+        <p class="summary-value">{{ accepted }}</p>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+      <div class="summary-card card p-4 h-100">
+        <h5 class="summary-label">Rejected</h5>
+        <p class="summary-value">{{ rejected }}</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-5">
+
+  <div class="text-end">
+    <a href="{% url 'job_list' %}" class="btn btn-primary btn-lg">View Jobs</a>
+  </div>
+{% endblock %}

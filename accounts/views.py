@@ -58,7 +58,7 @@ def dashboard(request):
 
         return render(
             request,
-            'dashboard/employer_dashboard.html',
+            'accounts/employer_dashboard.html',
             context
         )
 
@@ -99,7 +99,7 @@ def dashboard(request):
 
         return render(
             request,
-            'dashboard/jobseeker_dashboard.html',
+            'accounts/jobseeker_dashboard.html',
             context
         )
 
@@ -169,7 +169,7 @@ def user_login(request):
             login(request, user)
 
             next_page = request.POST.get('next') or request.GET.get('next')
-            return redirect(next_page or 'job_list')
+            return redirect(next_page or 'dashboard')
 
     else:
         form = AuthenticationForm()

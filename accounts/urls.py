@@ -28,4 +28,10 @@ urlpatterns = [
         views.user_logout,
         name='logout'
     ),
+
+    path(
+        'dashboard/',
+        views.dashboard,
+        name='dashboard'
+    ),
 ]
