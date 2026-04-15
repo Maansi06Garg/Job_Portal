@@ -48,8 +48,13 @@
   </div>
 
   <hr class="my-5">
-
-  <div class="text-end">
-    <a href="{% url 'job_list' %}" class="btn btn-primary btn-lg">View Jobs</a>
-  </div>
+  {% if total_jobs > 0 %}
+    <div class="text-end">
+      <a href="{% url 'job_list' %}" class="btn btn-primary btn-lg">View Jobs</a>
+    </div>
+  {% else %}
+    <div class="text-end">
+      <a href="{% url 'create_job' %}" class="btn btn-success btn-lg">Post New Job</a>
+    </div>
+  {% endif %}
 {% endblock %}

@@ -26,7 +26,11 @@
             {% if user.user_type == 'jobseeker' %}
               <li class="nav-item"><a class="nav-link" href="{% url 'my_applications' %}">Applications</a></li>
             {% endif %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+            {% if request.resolver_match.url_name == 'jobseeker_signup' or request.resolver_match.url_name == 'employer_signup' %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            {% else %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+            {% endif %}
           {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
             <li class="nav-item dropdown">
