@@ -6,6 +6,9 @@ from .models import Application
 from .forms import ApplicationForm
 from jobs.models import Job
 
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 @login_required
 def apply_job(request, job_id):
@@ -30,10 +33,23 @@ def apply_job(request, job_id):
             application = form.save(commit=False)
 
             application.job = job
-
             application.applicant = request.user
 
             application.save()
+
+            # Send Email to Employer
+
+            send_mail(
+                subject="New Job Application",
+
+                message=f"{request.user.username} applied for {job.title}",
+
+                from_email=settings.EMAIL_HOST_USER,
+
+                recipient_list=[job.employer.email],
+
+                fail_silently=True,
+            )
 
             return redirect('job_list')
 
@@ -90,6 +106,18 @@ def update_application_status(
 
     application.status = status
     application.save()
+
+    send_mail(
+        subject="Application Status Updated",
+
+        message=f"Your application for {application.job.title} is now {status}",
+
+        from_email=settings.EMAIL_HOST_USER,
+
+        recipient_list=[application.applicant.email],
+
+        fail_silently=True,
+    )
 
     return redirect(
         'view_applicants',
